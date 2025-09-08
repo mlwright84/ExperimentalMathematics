@@ -1,0 +1,262 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      9309,        254]
+NotebookOptionsPosition[      7480,        216]
+NotebookOutlinePosition[      7883,        232]
+CellTagsIndexPosition[      7840,        229]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Continued Fraction Expressions for \[Pi]", "Title",
+ CellChangeTimes->{
+  3.840278995204105*^9, {3.840279049317315*^9, 3.84027909469265*^9}, {
+   3.840284918776388*^9, 3.840284924028261*^9}, 3.840284956060569*^9, {
+   3.845999768058881*^9, 3.845999793366888*^9}, {3.9592106849193573`*^9, 
+   3.9592107090296173`*^9}},
+ TextAlignment->Center,ExpressionUUID->"3da8eaa4-de85-c449-9dd4-c0d6c989a273"],
+
+Cell[TextData[{
+ "Accompanies Section 1.7 of ",
+ StyleBox["Experimental Mathematics: A Computational Perspective",
+  FontSlant->"Italic"],
+ " by Matthew P. Richey and Matthew L. Wright"
+}], "Subtitle",
+ CellChangeTimes->{{3.846071946694004*^9, 3.846071951019271*^9}, {
+   3.8463287390321293`*^9, 3.846328739944585*^9}, {3.959178387747711*^9, 
+   3.9591784428734837`*^9}, {3.9591784977036953`*^9, 3.9591785089527645`*^9}, 
+   3.959179795914255*^9, 3.9592090383970146`*^9, 3.959210680992031*^9, 
+   3.9592107129078693`*^9},
+ TextAlignment->Center,
+ FontSize->18,ExpressionUUID->"ab8b832f-3811-b240-80a2-72814d858caf"],
+
+Cell[CellGroupData[{
+
+Cell["A Continued Fraction", "Section",
+ CellChangeTimes->{{3.963348656601679*^9, 
+  3.963348664939575*^9}},ExpressionUUID->"ff1ecec5-83d4-764e-aaef-\
+99bc3cec35bb"],
+
+Cell[TextData[{
+ "We will compute convergents of the continued fraction ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"1", "+", 
+    FractionBox["1", 
+     RowBox[{"2", "+", 
+      FractionBox["1", 
+       RowBox[{"2", "+", 
+        FractionBox["1", 
+         RowBox[{"2", "+", 
+          FractionBox["1", "\[DescendingEllipsis]"]}]]}]]}]]}], 
+   TraditionalForm]],ExpressionUUID->"62059d41-fe9f-9a47-b382-58e4e1f177c6"],
+ ", which appears in equation (1.15) in the text. "
+}], "Text",
+ CellChangeTimes->{{3.9623992051182766`*^9, 3.9623992595147133`*^9}, {
+  3.9633486762897854`*^9, 
+  3.9633487397411575`*^9}},ExpressionUUID->"06e09f99-59fd-e14c-bad3-\
+6eab6a8355ee"],
+
+Cell["One way to do this is with the following loop.", "Text",
+ CellChangeTimes->{{3.963348741534748*^9, 
+  3.9633487581884747`*^9}},ExpressionUUID->"137d00b7-4050-5348-ac2f-\
+7bf014b31031"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"contFraction", "[", "numLevels_", "]"}], ":=", 
+  RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"initial", " ", "value"}], ";", " ", 
+     RowBox[{
+     "starts", " ", "at", " ", "the", " ", "\"\<bottom\>\"", " ", "of", " ", 
+      "the", " ", "continued", " ", "fraction"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"val", "=", "2"}], "}"}], ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{"main", " ", 
+      RowBox[{"loop", ":", " ", 
+       RowBox[{
+       "compute", " ", "another", " ", "level", " ", "of", " ", "the", " ", 
+        "fraction", " ", "with", " ", "each", " ", "iteration"}]}]}], " ", 
+     "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Do", "[", 
+      RowBox[{
+       RowBox[{"val", "=", 
+        RowBox[{"2", "+", 
+         RowBox[{"1", "/", "val"}]}]}], ",", 
+       RowBox[{"numLevels", "-", "1"}]}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+      "compute", " ", "the", " ", "final", " ", "level", " ", "and", " ", 
+       "return", " ", "the", " ", "result"}], " ", "*)"}], " ", 
+     "\[IndentingNewLine]", 
+     RowBox[{"1", "+", 
+      RowBox[{"1", "/", "val"}]}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.82127951856251*^9, 3.821279651698505*^9}, {
+   3.821279693428469*^9, 3.821279699944858*^9}, 3.822066627638648*^9, 
+   3.8220667645304346`*^9, 3.9624011400490932`*^9, {3.963348767638962*^9, 
+   3.9633489355463047`*^9}},
+ CellLabel->
+  "In[117]:=",ExpressionUUID->"f0c6f98e-a5c4-9d41-9f06-a86b4597e02a"],
+
+Cell["Now we can compute the first several convergents.", "Text",
+ CellChangeTimes->{{3.963348941797777*^9, 
+  3.963348951985401*^9}},ExpressionUUID->"c2c58cb0-873c-4748-b48f-\
+c6d2d3a3f40a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"contFraction", "/@", 
+  RowBox[{"Range", "[", "8", "]"}]}]], "Input",
+ CellChangeTimes->{{3.9633488439783764`*^9, 3.9633488508762646`*^9}, 
+   3.9633489546102505`*^9},
+ CellLabel->
+  "In[118]:=",ExpressionUUID->"e0e4f283-8219-1347-af6a-a37882e6f2fc"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   FractionBox["3", "2"], ",", 
+   FractionBox["7", "5"], ",", 
+   FractionBox["17", "12"], ",", 
+   FractionBox["41", "29"], ",", 
+   FractionBox["99", "70"], ",", 
+   FractionBox["239", "169"], ",", 
+   FractionBox["577", "408"], ",", 
+   FractionBox["1393", "985"]}], "}"}]], "Output",
+ CellChangeTimes->{{3.9633488514119644`*^9, 3.9633488592818127`*^9}, 
+   3.9633489548582573`*^9},
+ CellLabel->
+  "Out[118]=",ExpressionUUID->"100639a0-adec-fe4a-8865-5df9a1a7c473"]
+}, Open  ]],
+
+Cell["Convert these values to decimal numbers:", "Text",
+ CellChangeTimes->{{3.96334900437883*^9, 
+  3.9633490112547226`*^9}},ExpressionUUID->"a83c7b66-965d-074d-806f-\
+a508c9018a3a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{
+   RowBox[{"contFraction", "/@", 
+    RowBox[{"Range", "[", "8", "]"}]}], ",", "12"}], "]"}]], "Input",
+ CellChangeTimes->{{3.9633488439783764`*^9, 3.9633488508762646`*^9}, {
+  3.9633489546102505`*^9, 3.9633489929978905`*^9}},
+ CellLabel->
+  "In[123]:=",ExpressionUUID->"e004d395-74ee-3d40-88aa-83a709c488ce"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "1.5`12.", ",", "1.4`12.", ",", 
+   "1.41666666666666666666666666666666666667`12.", ",", 
+   "1.41379310344827586206896551724137931034`12.", ",", 
+   "1.41428571428571428571428571428571428571`12.", ",", 
+   "1.41420118343195266272189349112426035503`12.", ",", 
+   "1.41421568627450980392156862745098039216`12.", ",", 
+   "1.41421319796954314720812182741116751269`12."}], "}"}]], "Output",
+ CellChangeTimes->{{3.9633489634998837`*^9, 3.96334899326466*^9}},
+ CellLabel->
+  "Out[123]=",ExpressionUUID->"6e5223c6-e81f-a64d-b77d-ecbb8ab03c44"]
+}, Open  ]],
+
+Cell[TextData[{
+ "It looks like the values are approaching ",
+ Cell[BoxData[
+  FormBox[
+   SqrtBox["2"], TraditionalForm]],ExpressionUUID->
+  "ca67937d-fb0f-384c-8e76-2dddf1088f1f"],
+ "."
+}], "Text",
+ CellChangeTimes->{{3.8220668057513485`*^9, 3.822066839002936*^9}, {
+  3.9633490169528236`*^9, 
+  3.9633490177050343`*^9}},ExpressionUUID->"e8e2b208-bab9-7f47-bd8a-\
+fb5c34eb957a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{
+   RowBox[{"Sqrt", "[", "2", "]"}], ",", "12"}], "]"}]], "Input",
+ CellChangeTimes->{{3.963348970052351*^9, 3.9633489965672226`*^9}},
+ CellLabel->
+  "In[124]:=",ExpressionUUID->"0891572b-5dfb-3e41-bae3-71c74d5563ce"],
+
+Cell[BoxData["1.41421356237309504880168872420969807857`12."], "Output",
+ CellChangeTimes->{{3.9633489720603237`*^9, 3.963348997108227*^9}},
+ CellLabel->
+  "Out[124]=",ExpressionUUID->"a907b906-6cad-ff44-8dee-861384c8b9c2"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1069.5, 678.75},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"14.2 for Microsoft Windows (64-bit) (March 14, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"74d0d644-8b1c-584d-9170-075a49978edd"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 402, 6, 96, "Title",ExpressionUUID->"3da8eaa4-de85-c449-9dd4-c0d6c989a273"],
+Cell[981, 30, 615, 12, 44, "Subtitle",ExpressionUUID->"ab8b832f-3811-b240-80a2-72814d858caf"],
+Cell[CellGroupData[{
+Cell[1621, 46, 165, 3, 66, "Section",ExpressionUUID->"ff1ecec5-83d4-764e-aaef-99bc3cec35bb"],
+Cell[1789, 51, 662, 18, 64, "Text",ExpressionUUID->"06e09f99-59fd-e14c-bad3-6eab6a8355ee"],
+Cell[2454, 71, 190, 3, 33, "Text",ExpressionUUID->"137d00b7-4050-5348-ac2f-7bf014b31031"],
+Cell[2647, 76, 1722, 43, 199, "Input",ExpressionUUID->"f0c6f98e-a5c4-9d41-9f06-a86b4597e02a"],
+Cell[4372, 121, 191, 3, 33, "Text",ExpressionUUID->"c2c58cb0-873c-4748-b48f-c6d2d3a3f40a"],
+Cell[CellGroupData[{
+Cell[4588, 128, 274, 6, 28, "Input",ExpressionUUID->"e0e4f283-8219-1347-af6a-a37882e6f2fc"],
+Cell[4865, 136, 509, 14, 46, "Output",ExpressionUUID->"100639a0-adec-fe4a-8865-5df9a1a7c473"]
+}, Open  ]],
+Cell[5389, 153, 183, 3, 33, "Text",ExpressionUUID->"a83c7b66-965d-074d-806f-a508c9018a3a"],
+Cell[CellGroupData[{
+Cell[5597, 160, 354, 8, 28, "Input",ExpressionUUID->"e004d395-74ee-3d40-88aa-83a709c488ce"],
+Cell[5954, 170, 580, 12, 32, "Output",ExpressionUUID->"6e5223c6-e81f-a64d-b77d-ecbb8ab03c44"]
+}, Open  ]],
+Cell[6549, 185, 380, 11, 34, "Text",ExpressionUUID->"e8e2b208-bab9-7f47-bd8a-fb5c34eb957a"],
+Cell[CellGroupData[{
+Cell[6954, 200, 261, 6, 28, "Input",ExpressionUUID->"0891572b-5dfb-3e41-bae3-71c74d5563ce"],
+Cell[7218, 208, 222, 3, 32, "Output",ExpressionUUID->"a907b906-6cad-ff44-8dee-861384c8b9c2"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

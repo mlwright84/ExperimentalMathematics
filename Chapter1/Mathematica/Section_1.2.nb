@@ -1,0 +1,1330 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     55946,       1322]
+NotebookOptionsPosition[     49241,       1231]
+NotebookOutlinePosition[     49665,       1247]
+CellTagsIndexPosition[     49622,       1244]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Archimedes's Method for Approximating \[Pi]", "Title",
+ CellChangeTimes->{{3.839328006657194*^9, 3.839328019850356*^9}, {
+   3.84607194218585*^9, 3.846071943166191*^9}, 3.959178547238764*^9},
+ TextAlignment->Center,ExpressionUUID->"f0e26973-e2f6-4675-aa52-95c6c69584bd"],
+
+Cell[TextData[{
+ "Accompanies Section 1.2 of ",
+ StyleBox["Experimental Mathematics: A Computational Perspective",
+  FontSlant->"Italic"],
+ " by Matthew P. Richey and Matthew L. Wright"
+}], "Subtitle",
+ CellChangeTimes->{{3.846071946694004*^9, 3.846071951019271*^9}, {
+   3.8463287390321293`*^9, 3.846328739944585*^9}, {3.959178387747711*^9, 
+   3.9591784428734837`*^9}, {3.9591784977036953`*^9, 3.9591785089527645`*^9}, 
+   3.959179795914255*^9},
+ TextAlignment->Center,
+ FontSize->18,ExpressionUUID->"a5c2892e-c9b5-43aa-b61c-b52f9108e4fd"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "Approximating \[Pi] with inscribed ",
+ Cell[BoxData[
+  FormBox[
+   SuperscriptBox["2", "n"], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "5475aa8d-1c9b-7d4a-917d-7a78c1e4bbf5"],
+ "-gons\t"
+}], "Section",
+ CellChangeTimes->{{3.8394231163384933`*^9, 3.8394231469568634`*^9}, {
+  3.846072312634701*^9, 3.8460723133969803`*^9}, {3.84607236920142*^9, 
+  3.846072386977242*^9}, {3.959174743402195*^9, 
+  3.9591747492176323`*^9}},ExpressionUUID->"debe1426-9c98-4a58-b928-\
+3f4d5fb495c4"],
+
+Cell["This is an implementation of Pseudocode 1.4 in Section 1.2.", "Text",
+ CellChangeTimes->{{3.8393280333948193`*^9, 3.8393280526268854`*^9}, {
+  3.8460724001303387`*^9, 3.846072425609079*^9}, {3.9591747254984837`*^9, 
+  3.95917476391457*^9}},ExpressionUUID->"37b9b8c5-7da1-4815-8675-\
+dcb73dfa99e9"],
+
+Cell["Set the number of iterations:", "Text",
+ CellChangeTimes->{{3.8393280333948193`*^9, 3.8393280526268854`*^9}, {
+  3.8460724001303387`*^9, 3.846072430934608*^9}, {3.9591747770899334`*^9, 
+  3.9591747791779575`*^9}},ExpressionUUID->"fed78f02-4795-4612-bf58-\
+46bfd7d5536d"],
+
+Cell[BoxData[
+ RowBox[{"nMax", "=", "10"}]], "Input",
+ CellChangeTimes->{{3.839328056612016*^9, 3.8393280614682703`*^9}, 
+   3.8393282525967817`*^9, 3.8393395448262253`*^9, 3.839423186840501*^9, 
+   3.9591748180699368`*^9},
+ CellLabel->"In[3]:=",ExpressionUUID->"df8be85d-221c-41d4-a038-19cdcf456997"],
+
+Cell["Set the initial side length of the inscribed square:", "Text",
+ CellChangeTimes->{{3.9591747961234226`*^9, 
+  3.9591748062890472`*^9}},ExpressionUUID->"08e52c58-a6c9-e641-aa0a-\
+30928f4af5df"],
+
+Cell[BoxData[
+ RowBox[{"sideLength", "=", 
+  RowBox[{"Sqrt", "[", "2", "]"}]}]], "Input",
+ CellChangeTimes->{{3.959174808147812*^9, 3.959174812906063*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"c55bb16d-f45e-534b-8231-69e50229ff4a"],
+
+Cell[TextData[{
+ "Initialize a list to store the approximations ",
+ Cell[BoxData[
+  FormBox[
+   SubsuperscriptBox["\[Pi]", "n", "i"], TraditionalForm]],ExpressionUUID->
+  "635798bc-ab1d-4178-8224-9d243abf8534"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.8393280648688416`*^9, 3.839328162311245*^9}, {
+  3.8393282046255116`*^9, 3.8393282178279495`*^9}, {3.8460725428688374`*^9, 
+  3.846072545910158*^9}, {3.846086720300478*^9, 3.8460867574789553`*^9}, {
+  3.88538089368081*^9, 3.885380900972048*^9}, {3.959174856379244*^9, 
+  3.9591748567416973`*^9}},ExpressionUUID->"eb88433d-bd2e-4ac4-ac21-\
+0b07c891ce40"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"piValues", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{"0", ",", "nMax"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.839328225602556*^9, 3.839328253846575*^9}, {
+  3.846086171394503*^9, 3.8460861747620783`*^9}},
+ CellLabel->"In[4]:=",ExpressionUUID->"85299dd2-f913-4513-b215-7d1c0bd95463"],
+
+Cell[TextData[{
+ "Include our initial approximation ",
+ Cell[BoxData[
+  FormBox[
+   SubsuperscriptBox["\[Pi]", "2", "i"], TraditionalForm]],ExpressionUUID->
+  "c8820b48-9db2-4e15-9c01-f5b2a2794406"],
+ " in the list:"
+}], "Text",
+ CellChangeTimes->{{3.8393282699572706`*^9, 3.839328280586024*^9}, 
+   3.8393299658861227`*^9, {3.8853808952609005`*^9, 3.885380922889323*^9}, {
+   3.9591748442013206`*^9, 
+   3.959174854533766*^9}},ExpressionUUID->"d1cdb1e1-f3d3-4fef-9de1-\
+99faec6206fc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"piValues", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+    "=", 
+   RowBox[{"2", "*", "sideLength"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.8393282857504735`*^9, 3.8393283350243487`*^9}, {
+  3.846086179386441*^9, 3.846086194079454*^9}, {3.9591748363308487`*^9, 
+  3.9591748369572773`*^9}},
+ CellLabel->"In[5]:=",ExpressionUUID->"637cccc8-2549-4db4-bd6e-50c9714635f1"],
+
+Cell[TextData[{
+ "Use a loop to compute  ",
+ Cell[BoxData[
+  FormBox[
+   SubsuperscriptBox["\[Pi]", "n", "i"], TraditionalForm]],ExpressionUUID->
+  "6b9a44fa-beba-44f2-94af-8a723f0fbea0"],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"n", "=", "3"}], ",", "4", ",", "...", ",", "nMax"}], 
+   TraditionalForm]],ExpressionUUID->"f3e37335-c8ec-439f-ba9b-ab983c09ade1"],
+ ". The following code uses a ",
+ StyleBox["For", "Code"],
+ " loop, the syntax of which is very similar to the pseudocode in the text. \
+Note that Mathematica requires that multiple expressions in the body of the \
+loop to be separated by semicolons. Note the recurring use of the variable ",
+ StyleBox["sideLength", "Code"],
+ StyleBox[".",
+  FontWeight->"Bold"]
+}], "Text",
+ CellChangeTimes->{{3.8393283435006123`*^9, 3.83932838092912*^9}, {
+  3.8393287387096276`*^9, 3.839328789984234*^9}, {3.839328943305991*^9, 
+  3.8393290358142023`*^9}, {3.846086776722762*^9, 3.8460867789773417`*^9}, {
+  3.846087429158399*^9, 3.846087441885612*^9}, {3.9591749147433033`*^9, 
+  3.9591749341564903`*^9}},ExpressionUUID->"7314518d-05a9-483f-9f56-\
+3224132238a6"],
+
+Cell[BoxData[
+ RowBox[{"For", "[", 
+  RowBox[{
+   RowBox[{"n", "=", "3"}], ",", 
+   RowBox[{"n", "<=", "nMax"}], ",", 
+   RowBox[{"n", "++"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Compute", " ", "a", " ", "and", " ", "b", "  ", "values"}], " ", 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"a", "=", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{"1", "-", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"b", "=", 
+     RowBox[{"1", "-", "a"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "Compute", " ", "the", " ", "new", " ", "side", " ", "length", " ", 
+      "and", " ", "perimeter"}], " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"sideLength", "=", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{
+       SuperscriptBox["b", "2"], "+", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"perimeter", " ", "=", " ", 
+     RowBox[{
+      SuperscriptBox["2", "n"], "*", " ", "sideLength"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "Compute", " ", "the", " ", "approximation", " ", "to", " ", "pi"}], " ",
+      "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+     "piValues", "\[LeftDoubleBracket]", "n", "\[RightDoubleBracket]"}], "=", 
+     RowBox[{"perimeter", "/", "2"}]}]}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.839328565974078*^9, 3.8393285784977713`*^9}, {
+  3.8393287208111315`*^9, 3.839328722649518*^9}, {3.8393397838422685`*^9, 
+  3.8393397886873617`*^9}, {3.839339892267519*^9, 3.8393398946428194`*^9}, {
+  3.8460861998237267`*^9, 3.846086216688661*^9}, {3.846086764222733*^9, 
+  3.846086823213705*^9}, {3.8853809316517467`*^9, 3.885380951624426*^9}, {
+  3.959174950096924*^9, 3.959174996911272*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"2b96a197-3175-4b98-b4f2-7834af23d515"],
+
+Cell[TextData[{
+ "Now we can print the results. The results are stored internally as \
+algebraic expressions involving lots of square roots, so we use the ",
+ StyleBox[ButtonBox["N",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://reference.wolfram.com/language/ref/N.html"], None},
+  ButtonNote->"https://reference.wolfram.com/language/ref/N.html"], "Code",
+  FontVariations->{"Underline"->True}],
+ " function to print them as decimal numbers. (To understand this, run the \
+following code with and without the ",
+ StyleBox["N", "Code"],
+ ".)"
+}], "Text",
+ CellChangeTimes->{{3.8393287920843983`*^9, 3.839328796209746*^9}, {
+  3.83932883103655*^9, 3.8393289218239374`*^9}, {3.9591750155085983`*^9, 
+  3.9591750228345966`*^9}, {3.9591750776453*^9, 
+  3.959175083476492*^9}},ExpressionUUID->"0dc8cacd-3370-4838-a91a-\
+8167f0af712c"],
+
+Cell[BoxData[
+ RowBox[{"N", "[", "piValues", "]"}]], "Input",
+ CellChangeTimes->{{3.8393288064262066`*^9, 3.8393288251492763`*^9}, {
+  3.839339793094615*^9, 3.8393397945977683`*^9}, {3.846086222090783*^9, 
+  3.8460862541355753`*^9}},
+ CellLabel->"In[7]:=",ExpressionUUID->"69111684-abeb-4b03-9dd5-e042b096e894"],
+
+Cell[TextData[{
+ "Mathematica also provides a ",
+ StyleBox["Do", "Code"],
+ " loop, which is functionally equivalent to the ",
+ StyleBox["For", "Code"],
+ " loop but has a slightly simpler syntax that specifies the counter variable \
+after the body of the loop . "
+}], "Text",
+ CellChangeTimes->{{3.839329027208593*^9, 3.839329031730159*^9}, {
+  3.8393290784683914`*^9, 3.8393291003645744`*^9}, {3.9591751216600304`*^9, 
+  3.959175147997404*^9}},ExpressionUUID->"722abd48-5e12-493b-b453-\
+e176e992a8e7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"sideLength", "=", 
+   RowBox[{"Sqrt", "[", "2", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Compute", " ", "a", " ", "and", " ", "b", "  ", "values"}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"a", "=", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{"1", "-", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"b", "=", 
+     RowBox[{"1", "-", "a"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "Compute", " ", "the", " ", "new", " ", "side", " ", "length", " ", 
+      "and", " ", "perimeter"}], " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"sideLength", "=", 
+     RowBox[{"Sqrt", "[", 
+      RowBox[{
+       SuperscriptBox["b", "2"], "+", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"perimeter", " ", "=", " ", 
+     RowBox[{
+      SuperscriptBox["2", "n"], "*", " ", "sideLength"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "Compute", " ", "the", " ", "approximation", " ", "to", " ", "pi"}], " ",
+      "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+     "piValues", "\[LeftDoubleBracket]", "n", "\[RightDoubleBracket]"}], "=", 
+     RowBox[{"perimeter", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "3", ",", "nMax"}], "}"}]}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.8393283860450554`*^9, 3.8393285393277693`*^9}, {
+   3.839424246296171*^9, 3.839424248042228*^9}, {3.846086263613233*^9, 
+   3.846086273346222*^9}, {3.846086321946949*^9, 3.8460863258062363`*^9}, {
+   3.846086791857275*^9, 3.846086792305869*^9}, {3.8460868301690607`*^9, 
+   3.8460868346091547`*^9}, {3.8853809896509733`*^9, 3.885380998490092*^9}, 
+   3.959175165554718*^9},
+ CellLabel->"In[10]:=",ExpressionUUID->"e8bcb078-74c4-4988-8d9d-eed89c00a3ad"],
+
+Cell[TextData[{
+ "The ",
+ StyleBox["N", "Code"],
+ " function can convert an exact value to any specified number of decimal \
+digits, as shown below with ten digits."
+}], "Text",
+ CellChangeTimes->{{3.9591751905821896`*^9, 
+  3.9591752164243507`*^9}},ExpressionUUID->"bcbe722a-1c90-8f44-9844-\
+d11227302d49"],
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{"piValues", ",", "10"}], "]"}]], "Input",
+ CellChangeTimes->{{3.841144007803937*^9, 3.841144017267536*^9}, {
+   3.841145424350175*^9, 3.8411454320412807`*^9}, 3.846086289563821*^9, 
+   3.885381005332427*^9},
+ CellLabel->"In[12]:=",ExpressionUUID->"6bae32d7-5ed1-4696-9581-27075cb05190"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Accuracy", "Section",
+ CellChangeTimes->{{3.8393390443417015`*^9, 
+  3.8393390497138786`*^9}},ExpressionUUID->"b74a5dfa-7d39-4e76-a5c4-\
+d90454f4fb5a"],
+
+Cell[TextData[{
+ "How accurate are our approximations? First, we will find the difference \
+between our approximations and Mathematica\[CloseCurlyQuote]s value of \[Pi], \
+which can be accessed via the keyword ",
+ StyleBox["Pi", "Code"],
+ "."
+}], "Text",
+ CellChangeTimes->{{3.8394243806320333`*^9, 3.8394244169517813`*^9}, {
+  3.83950366841276*^9, 3.839503670114395*^9}, {3.9591752826548977`*^9, 
+  3.959175290153101*^9}, {3.9591753318277016`*^9, 
+  3.959175335627619*^9}},ExpressionUUID->"e7a659d3-a6e7-473d-a8e6-\
+f90846f8ef4d"],
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{"Pi", "-", "piValues"}], "]"}]], "Input",
+ CellChangeTimes->{{3.839337956609527*^9, 3.8393379606023445`*^9}, {
+  3.839338012376995*^9, 3.8393380155945697`*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"b5288b72-2929-486c-9c3a-711bf15f1b95"],
+
+Cell["\<\
+The negative log of the difference is approximately the number of correct \
+digits in our approximation. (See Pseudocode 1.9 and adjacent discussion in \
+the text.)\
+\>", "Text",
+ CellChangeTimes->{{3.8394244336968927`*^9, 3.8394244552326765`*^9}, {
+  3.9591753706300583`*^9, 
+  3.959175382094721*^9}},ExpressionUUID->"199a206e-7794-44f2-9ee5-\
+b05bc2131408"],
+
+Cell[BoxData[
+ RowBox[{"accuracy", "=", 
+  RowBox[{"N", "[", 
+   RowBox[{"-", 
+    RowBox[{"Log", "[", 
+     RowBox[{"10", ",", 
+      RowBox[{"Pi", "-", "piValues"}]}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.8393379941847734`*^9, 3.8393380324802876`*^9}, {
+  3.839338089639231*^9, 3.8393380934666557`*^9}, {3.8393382298928185`*^9, 
+  3.839338233206504*^9}, {3.839424422455903*^9, 3.839424423800742*^9}, {
+  3.8394246088231144`*^9, 3.8394246099822054`*^9}},
+ CellLabel->"In[14]:=",ExpressionUUID->"d6bd7c16-36d9-4b60-abb9-3eff92de0e47"],
+
+Cell[TextData[{
+ "We can display our approximations and the numbers of correct digits for \
+each ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]],ExpressionUUID->
+  "745e2d6f-4ec8-4c71-a424-dca64d5f3e26"],
+ " in table form:"
+}], "Text",
+ CellChangeTimes->{{3.8394245131265297`*^9, 
+  3.8394245415972853`*^9}},ExpressionUUID->"7c2e4f9a-b4b3-4f89-b14c-\
+e7412dd62ed2"],
+
+Cell[BoxData[
+ RowBox[{"TableForm", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Range", "[", "nMax", "]"}], ",", 
+     RowBox[{"N", "[", "piValues", "]"}], ",", "accuracy"}], "}"}], ",", 
+   RowBox[{"TableHeadings", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"\"\<n\>\"", ",", "\"\<approx\>\"", ",", "\"\<accuracy\>\""}], 
+       "}"}], ",", "None"}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.839338070470482*^9, 3.839338108153427*^9}, {
+  3.839338251831539*^9, 3.8393382553758583`*^9}, {3.83933838657477*^9, 
+  3.839338414559239*^9}, {3.8394244647954865`*^9, 3.839424509949297*^9}, {
+  3.8394246175169797`*^9, 3.839424622710176*^9}},
+ CellLabel->"In[15]:=",ExpressionUUID->"4a65f344-7de1-49c5-8b9c-fa320def5c73"],
+
+Cell[TextData[{
+ "A plot shows that our accuracy increases linearly with ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]],ExpressionUUID->
+  "cefd9d07-2fae-4a3d-bcc9-8c22b30af95a"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.8394250858572536`*^9, 
+  3.839425113236532*^9}},ExpressionUUID->"615a61ac-d2d5-4e5c-9f64-\
+41a53b7aa5ca"],
+
+Cell[BoxData[
+ RowBox[{"ListPlot", "[", 
+  RowBox[{
+   RowBox[{"accuracy", "\[LeftDoubleBracket]", 
+    RowBox[{"2", ";;"}], "\[RightDoubleBracket]"}], ",", 
+   RowBox[{"DataRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"2", ",", "nMax"}], "}"}]}], ",", 
+   RowBox[{"AxesLabel", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\"\<n\>\"", ",", "\"\<accuracy\>\""}], "}"}]}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8394246005918264`*^9, 3.839424628194461*^9}, {
+  3.839424801903924*^9, 3.8394248286307087`*^9}, {3.8394250420361967`*^9, 
+  3.839425055641504*^9}},
+ CellLabel->"In[16]:=",ExpressionUUID->"f1ccac33-e63a-4df1-84b2-d10ede94d185"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Efficiency", "Section",
+ CellChangeTimes->{{3.839425127733127*^9, 
+  3.8394251319515824`*^9}},ExpressionUUID->"6f86353f-f7ad-4e59-aa42-\
+3a9935745753"],
+
+Cell[TextData[{
+ "Mathematica has a a built-in function called ",
+ StyleBox[ButtonBox["Timing",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://reference.wolfram.com/language/ref/Timing.html"], None},
+  ButtonNote->"https://reference.wolfram.com/language/ref/Timing.html"], 
+  "Code"],
+ StyleBox[" ",
+  FontWeight->"Bold"],
+ "which will help us analyze the efficiency of our algorithm for \
+approximating \[Pi]."
+}], "Text",
+ CellChangeTimes->{{3.839426711863352*^9, 3.8394267310727034`*^9}, {
+   3.8460757580031023`*^9, 3.84607581310823*^9}, {3.84607587778605*^9, 
+   3.846075970078437*^9}, 3.84616096233202*^9, {3.959175424696518*^9, 
+   3.9591754899291515`*^9}},ExpressionUUID->"488d9fc7-7b84-4da7-b2c3-\
+f74cd8b71dee"],
+
+Cell[TextData[{
+ "Here is a simple example of how ",
+ StyleBox["Timing", "Code"],
+ " works. Suppose we wanted to determine the time required to add up ",
+ Cell[BoxData[
+  FormBox[
+   TemplateBox[<|"boxes" -> FormBox[
+       RowBox[{
+         UnderoverscriptBox["\[Sum]", 
+          RowBox[{
+            StyleBox["n", "TI"], "\[LongEqual]", "1"}], 
+          StyleBox["N", "TI"], LimitsPositioning -> True], 
+         FractionBox["1", 
+          SuperscriptBox[
+           StyleBox["n", "TI"], "2"]]}], TraditionalForm], "errors" -> {}, 
+     "input" -> "$\\sum_{n=1}^{N}\\frac{1}{n^2}$", "state" -> "Boxes"|>,
+    "TeXAssistantTemplate"], TraditionalForm]],ExpressionUUID->
+  "1655103e-e479-6248-a6e4-6ca9055e3ffe"],
+ " for some large value of ",
+ Cell[BoxData[
+  FormBox["N", TraditionalForm]],ExpressionUUID->
+  "0b02714b-7777-fe49-a744-e519821449a1"],
+ ". We could do this as follows:"
+}], "Text",
+ CellChangeTimes->{{3.839426711863352*^9, 3.8394267310727034`*^9}, {
+   3.8460757580031023`*^9, 3.84607581310823*^9}, {3.84607587778605*^9, 
+   3.846075970078437*^9}, 3.84616096233202*^9, {3.959175424696518*^9, 
+   3.9591755203949337`*^9}},ExpressionUUID->"ae9d918c-0ef5-fd43-89df-\
+c6af133a36ba"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nMax", "=", "10000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Timing", "[", 
+  RowBox[{"Sum", "[", 
+   RowBox[{
+    RowBox[{"N", "[", 
+     RowBox[{
+      FractionBox["1", 
+       SuperscriptBox["n", "2"]], ",", "20"}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"n", ",", "1", ",", "nMax"}], "}"}]}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.846075817312809*^9, 3.846075872888708*^9}, {
+  3.9591755248881645`*^9, 3.959175527249363*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"1136c971-c993-4ded-b275-fedf248a7cb7"],
+
+Cell[TextData[{
+ "The return value of ",
+ StyleBox["Timing", "Code"],
+ " is a list of two values. The first element is the time required (what we \
+want) and the second element is the value computed. So if we just wanted the \
+time required for this computation, we could extract it."
+}], "Text",
+ CellChangeTimes->{{3.8460759741558723`*^9, 
+  3.846076041486788*^9}},ExpressionUUID->"bf037cee-8f10-4943-b4f1-\
+12e2114ac7ff"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nMax", "=", "10000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"theTime", "=", 
+  RowBox[{
+   RowBox[{"Timing", "[", 
+    RowBox[{"Sum", "[", 
+     RowBox[{
+      RowBox[{"N", "[", 
+       RowBox[{
+        FractionBox["1", 
+         SuperscriptBox["n", "2"]], ",", "20"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"n", ",", "1", ",", "nMax"}], "}"}]}], "]"}], "]"}], "[", 
+   RowBox[{"[", "1", "]"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.846076050414403*^9, 3.846076055693707*^9}, 
+   3.9591755480616837`*^9},
+ CellLabel->"In[19]:=",ExpressionUUID->"e2aba1bf-6f4d-412d-9190-e7b18ad0966b"],
+
+Cell[TextData[{
+ "Here is one way to measure the runtime of our approximation code for ",
+ StyleBox["nMax", "Code",
+  FontWeight->"Bold"],
+ " iterations."
+}], "Text",
+ CellChangeTimes->{{3.839426711863352*^9, 3.8394267310727034`*^9}, {
+  3.8460757580031023`*^9, 3.846075810407778*^9}, {3.959175551858595*^9, 
+  3.9591755636713543`*^9}},ExpressionUUID->"3f4db183-23cd-4404-af5e-\
+a1afbf47837f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"initialize", " ", "values"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"nMax", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sideLength", "=", 
+     RowBox[{"Sqrt", "[", "2", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"piValues", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{"0", ",", "nMax"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "piValues", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], "=", 
+     RowBox[{"2", "*", "sideLength"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "run", " ", "the", " ", "loop", " ", "and", " ", "store", " ", "the", " ",
+      "runtime"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"runtime1", "=", 
+     RowBox[{
+      RowBox[{"Timing", "[", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{"(*", " ", 
+         RowBox[{"Compute", " ", "a", " ", "and", " ", "b", "  ", "values"}], 
+         " ", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"a", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"1", "-", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"b", "=", 
+           RowBox[{"1", "-", "a"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Compute", " ", "the", " ", "new", " ", "side", " ", "length", " ",
+             "and", " ", "perimeter"}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"sideLength", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{
+             SuperscriptBox["b", "2"], "+", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"perimeter", " ", "=", " ", 
+           RowBox[{
+            SuperscriptBox["2", "n"], "*", " ", "sideLength"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Compute", " ", "the", " ", "approximation", " ", "to", " ", 
+            "pi"}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "piValues", "\[LeftDoubleBracket]", "n", "\[RightDoubleBracket]"}],
+            "=", 
+           RowBox[{"perimeter", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"n", ",", "3", ",", "nMax"}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]",
+       "1", "\[RightDoubleBracket]"}]}], ";"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "the", " ", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], " ", 
+     "stores", " ", "only", " ", "the", " ", "first", " ", "value", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"i", ".", "e", "."}], ",", " ", 
+       RowBox[{"the", " ", "runtime"}]}], ")"}], " ", "returned", " ", "by", " ",
+      "Timing"}], " ", "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.8393390371544123`*^9, 3.8393390405259542`*^9}, {
+   3.839425785655071*^9, 3.839425855258587*^9}, {3.8394259054666877`*^9, 
+   3.8394259130318723`*^9}, {3.8394259487287617`*^9, 3.839425949353894*^9}, 
+   3.839426095326118*^9, {3.839426126460825*^9, 3.8394262044982567`*^9}, {
+   3.839426546242377*^9, 3.8394265615365915`*^9}, 3.8394267007557945`*^9, {
+   3.841144146731913*^9, 3.8411441619544287`*^9}, {3.84114419397616*^9, 
+   3.841144195040254*^9}, {3.841144353640024*^9, 3.8411443550133057`*^9}, {
+   3.8460863576038513`*^9, 3.846086384718998*^9}, {3.846086422464027*^9, 
+   3.846086437799981*^9}, {3.846086473322238*^9, 3.8460864950968943`*^9}, {
+   3.846086847511139*^9, 3.846086850784565*^9}, {3.846087079925948*^9, 
+   3.8460870809389343`*^9}, {3.846087145337583*^9, 3.84608714621986*^9}, {
+   3.9591755767351284`*^9, 3.959175579476103*^9}, {3.9591757549304276`*^9, 
+   3.9591757880822926`*^9}, 3.959175859260887*^9, {3.9591762419619637`*^9, 
+   3.9591762543827057`*^9}, 3.9591763660273495`*^9},
+ CellLabel->"In[71]:=",ExpressionUUID->"c7109900-cb40-4f0a-a599-f1006591312c"],
+
+Cell[TextData[{
+ "Show the runtime and the decimal approximations of ",
+ Cell[BoxData[
+  FormBox[
+   TemplateBox[<|
+    "boxes" -> FormBox["\[Pi]", TraditionalForm], "errors" -> {}, "input" -> 
+     "\\pi", "state" -> "Boxes"|>,
+    "TeXAssistantTemplate"], TraditionalForm]],ExpressionUUID->
+  "857a560d-752e-495d-8a46-a6b636cfdf37"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.846086876573208*^9, 3.8460869223056583`*^9}, {
+  3.959175719164852*^9, 
+  3.95917573161495*^9}},ExpressionUUID->"789c4d75-1b4a-470c-8b98-\
+4c0872ac00d6"],
+
+Cell[BoxData[{"runtime1", "\[IndentingNewLine]", 
+ RowBox[{"N", "[", 
+  RowBox[{"piValues", ",", "15"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.8393390371544123`*^9, 3.8393390405259542`*^9}, {
+   3.839425785655071*^9, 3.839425855258587*^9}, {3.8394259054666877`*^9, 
+   3.8394259130318723`*^9}, {3.8394259487287617`*^9, 3.839425949353894*^9}, 
+   3.839426095326118*^9, {3.839426126460825*^9, 3.8394262044982567`*^9}, {
+   3.839426546242377*^9, 3.8394265615365915`*^9}, 3.8394267007557945`*^9, {
+   3.841144146731913*^9, 3.8411441619544287`*^9}, {3.84114419397616*^9, 
+   3.841144195040254*^9}, {3.841144353640024*^9, 3.8411443550133057`*^9}, {
+   3.8460863576038513`*^9, 3.846086384718998*^9}, 3.846086422464027*^9, {
+   3.846086485031732*^9, 3.846086488395246*^9}, {3.846086520864025*^9, 
+   3.8460865210031223`*^9}, {3.846086925338581*^9, 3.8460869285946903`*^9}},
+ CellLabel->"In[76]:=",ExpressionUUID->"481a1ff1-910a-4450-b484-0e8708b1c517"],
+
+Cell[TextData[{
+ "This code may seem to run quite fast. However, try increasing the value of ",
+ StyleBox["nMax", "Code"],
+ " and running it again! You will probably find that the code takes a very \
+long time to run when ",
+ StyleBox["nMax", "Code"],
+ " is as large as 15 or 18."
+}], "Text",
+ CellChangeTimes->{{3.8394267456589684`*^9, 3.8394268643502254`*^9}, {
+  3.959176374287163*^9, 
+  3.959176374588043*^9}},ExpressionUUID->"e0030768-8c17-435b-9601-\
+b21a93a79f95"],
+
+Cell[TextData[{
+ "The reason for this long runtime is that Mathematica is computing very \
+large algebraic expressions involving nested square roots. Print the first \
+four elements in ",
+ StyleBox["piValues", "Code"],
+ " to see some:"
+}], "Text",
+ CellChangeTimes->{{3.839426865896416*^9, 3.83942691745382*^9}, {
+  3.840898827303377*^9, 
+  3.840898832187545*^9}},ExpressionUUID->"e803e384-ca49-423b-a545-\
+4fa1140eb517"],
+
+Cell[BoxData[
+ RowBox[{"piValues", "\[LeftDoubleBracket]", 
+  RowBox[{";;", "4"}], "\[RightDoubleBracket]"}]], "Input",
+ CellChangeTimes->{{3.839426902590954*^9, 3.8394269037904367`*^9}, {
+  3.8408988197231336`*^9, 3.840898822530035*^9}},
+ CellLabel->
+  "In[168]:=",ExpressionUUID->"307e6422-4c43-41b0-a250-cf6307496e09"],
+
+Cell[TextData[{
+ "We can improve the efficiency of our code by asking Mathematica to simplify \
+each side length as it computes them. Mathematica provides a ",
+ StyleBox["Simplify", "Code"],
+ " function that does exactly this. Here is another copy of the code with ",
+ StyleBox["Simplify", "Code"],
+ " inserted into the loop:"
+}], "Text",
+ CellChangeTimes->{{3.8394269774951506`*^9, 3.83942703707423*^9}, {
+  3.839427077014367*^9, 3.839427090510086*^9}, {3.8394272296802607`*^9, 
+  3.839427231553906*^9}},ExpressionUUID->"7551ef9d-597d-4adb-b9c8-\
+91efd922fe52"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"initialize", " ", "values"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"nMax", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sideLength", "=", 
+     RowBox[{"Sqrt", "[", "2", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"piValues", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{"0", ",", "nMax"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "piValues", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], "=", 
+     RowBox[{"2", "*", "sideLength"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "run", " ", "the", " ", "loop", " ", "and", " ", "store", " ", "the", " ",
+      "runtime"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"runtime2", "=", 
+     RowBox[{
+      RowBox[{"Timing", "[", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{"(*", " ", 
+         RowBox[{"Compute", " ", "a", " ", "and", " ", "b", "  ", "values"}], 
+         " ", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"a", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"1", "-", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"b", "=", 
+           RowBox[{"1", "-", "a"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Compute", " ", "the", " ", "new", " ", "side", " ", "length", " ",
+             "and", " ", "perimeter"}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"sideLength", "=", 
+           RowBox[{"Simplify", "[", 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{
+              SuperscriptBox["b", "2"], "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}], 
+            "]"}]}], ";", " ", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "note", " ", "the", " ", "use", " ", "of", " ", "Simplify", " ", 
+            "here"}], " ", "*)"}], " ", "\[IndentingNewLine]", 
+          RowBox[{"perimeter", " ", "=", " ", 
+           RowBox[{
+            SuperscriptBox["2", "n"], "*", " ", "sideLength"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Compute", " ", "the", " ", "approximation", " ", "to", " ", 
+            "pi"}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "piValues", "\[LeftDoubleBracket]", "n", "\[RightDoubleBracket]"}],
+            "=", 
+           RowBox[{"perimeter", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"n", ",", "3", ",", "nMax"}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]",
+       "1", "\[RightDoubleBracket]"}]}], ";"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "the", " ", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], " ", 
+     "stores", " ", "only", " ", "the", " ", "first", " ", "value", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"i", ".", "e", "."}], ",", " ", 
+       RowBox[{"the", " ", "runtime"}]}], ")"}], " ", "returned", " ", "by", " ",
+      "Timing"}], " ", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", "output", " ", "*)"}], "\[IndentingNewLine]", 
+   "runtime2", "\[IndentingNewLine]", 
+   RowBox[{"N", "[", 
+    RowBox[{"piValues", ",", "15"}], "]"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{"note", ":", " ", 
+     RowBox[{
+     "number", " ", "of", " ", "output", " ", "digits", " ", "here"}]}], " ", 
+    "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.8393390371544123`*^9, 3.8393390405259542`*^9}, {
+   3.839425785655071*^9, 3.839425855258587*^9}, {3.8394259054666877`*^9, 
+   3.8394259130318723`*^9}, {3.8394259487287617`*^9, 3.839425949353894*^9}, 
+   3.839426095326118*^9, {3.839426126460825*^9, 3.8394262044982567`*^9}, {
+   3.839426546242377*^9, 3.8394265615365915`*^9}, 3.8394267007557945`*^9, {
+   3.839427050879068*^9, 3.839427101417864*^9}, {3.8394271482935095`*^9, 
+   3.83942714837164*^9}, {3.8394271826966076`*^9, 3.839427267156108*^9}, {
+   3.839427773555684*^9, 3.839427834268521*^9}, {3.839427948135581*^9, 
+   3.839427965300494*^9}, {3.83942801228706*^9, 3.8394280257606397`*^9}, 
+   3.8394280679777164`*^9, {3.8394281715375166`*^9, 3.8394281780216265`*^9}, {
+   3.841144125401819*^9, 3.841144125688978*^9}, {3.841144175869357*^9, 
+   3.841144176620921*^9}, {3.841144279148656*^9, 3.841144280108746*^9}, {
+   3.841144357833435*^9, 3.841144360093772*^9}, {3.846086956053409*^9, 
+   3.846087006642743*^9}, {3.959176398353903*^9, 3.9591764337163086`*^9}, {
+   3.9591764812266464`*^9, 3.9591765224306374`*^9}, 3.9591765723543053`*^9},
+ CellLabel->
+  "In[120]:=",ExpressionUUID->"7853f27e-cf5a-47b4-932d-8a3826a8aaf5"],
+
+Cell[TextData[{
+ "The code above should run reasonably for ",
+ StyleBox["nMax", "Code"],
+ " values such as 40 or 50. However, larger values such as 200 will still \
+require long runtimes."
+}], "Text",
+ CellChangeTimes->{{3.8394278696578517`*^9, 3.8394279313029556`*^9}, {
+  3.839428071806965*^9, 3.8394281369261503`*^9}, {3.9591764547260246`*^9, 
+  3.9591764747890377`*^9}, {3.959176513713455*^9, 
+  3.959176517215893*^9}},ExpressionUUID->"961c8a70-8845-4d06-be12-\
+6c8447f9ea96"],
+
+Cell[TextData[{
+ "Another option is that we could use decimal values throughout the \
+computation. The following code cell defines the ",
+ StyleBox["sideLength", "Code"],
+ " variable using 30 digits of precision. Mathematica then carries this level \
+of precision throughout the computation. Note that we do not need to use the ",
+ StyleBox["Simplify", "Code"],
+ " function in this case."
+}], "Text",
+ CellChangeTimes->{{3.839428180521434*^9, 3.839428299035388*^9}, {
+  3.9591766613930264`*^9, 3.9591766940705967`*^9}, {3.959176750282177*^9, 
+  3.959176830997341*^9}},ExpressionUUID->"b44c8a91-230d-43ab-87da-\
+d68a9158cda1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"initialize", " ", "values"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"nMax", "=", "15"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"precision", "=", "30"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sideLength", "=", 
+     RowBox[{"N", "[", 
+      RowBox[{
+       RowBox[{"Sqrt", "[", "2", "]"}], ",", "precision"}], "]"}]}], ";"}], 
+   "  ", 
+   RowBox[{"(*", " ", 
+    RowBox[{"note", " ", "precision", " ", "specificiation", " ", "here"}], 
+    " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"piValues", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{"0", ",", "nMax"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "piValues", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], "=", 
+     RowBox[{"2", "*", "sideLength"}]}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "run", " ", "the", " ", "loop", " ", "and", " ", "store", " ", "the", " ",
+      "runtime"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"runtime3", "=", 
+     RowBox[{
+      RowBox[{"Timing", "[", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{"(*", " ", 
+         RowBox[{"Compute", " ", "a", " ", "and", " ", "b", "  ", "values"}], 
+         " ", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"a", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"1", "-", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"b", "=", 
+           RowBox[{"1", "-", "a"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Compute", " ", "the", " ", "new", " ", "side", " ", "length", " ",
+             "and", " ", "perimeter"}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"sideLength", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{
+             SuperscriptBox["b", "2"], "+", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+          "  ", "\[IndentingNewLine]", 
+          RowBox[{"perimeter", " ", "=", " ", 
+           RowBox[{
+            SuperscriptBox["2", "n"], "*", " ", "sideLength"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Compute", " ", "the", " ", "approximation", " ", "to", " ", 
+            "pi"}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "piValues", "\[LeftDoubleBracket]", "n", "\[RightDoubleBracket]"}],
+            "=", 
+           RowBox[{"perimeter", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"n", ",", "3", ",", "nMax"}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]",
+       "1", "\[RightDoubleBracket]"}]}], ";"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{
+     "the", " ", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], " ", 
+     "stores", " ", "only", " ", "the", " ", "first", " ", "value", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"i", ".", "e", "."}], ",", " ", 
+       RowBox[{"the", " ", "runtime"}]}], ")"}], " ", "returned", " ", "by", " ",
+      "Timing"}], " ", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", "output", " ", "*)"}], "\[IndentingNewLine]", 
+   "runtime3", "\[IndentingNewLine]", "piValues"}]}]], "Input",
+ CellChangeTimes->{{3.9591765921035576`*^9, 3.959176613507353*^9}, {
+  3.9591766999446697`*^9, 3.95917674450008*^9}, {3.959176836612568*^9, 
+  3.9591768478836517`*^9}},
+ CellLabel->
+  "In[151]:=",ExpressionUUID->"938c9607-7f4d-7941-8fb1-649da8873ff3"],
+
+Cell[TextData[{
+ "Comparing all three  versions, we see that there is a significant \
+difference in runtimes.  In particular, the first version is markedly less \
+efficient due to the unsimplified algebraic expressions. Simplifying the key \
+expressions greatly improves the efficiency while still preserving the exact \
+form of all the expressions. If the goal is simply numerical precision, the \
+last form (with a large value of the variable ",
+ StyleBox["precision", "Code"],
+ ") results in another dramatic increase in efficiency. "
+}], "Text",
+ CellChangeTimes->{{3.841146152779657*^9, 3.841146391589287*^9}, {
+  3.9591768659489155`*^9, 
+  3.959176896436281*^9}},ExpressionUUID->"8079c526-f3f5-454a-9fdf-\
+b75030e5c5fd"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Introducing Functions", "Section",
+ CellChangeTimes->{{3.8395036798049245`*^9, 
+  3.839503698388985*^9}},ExpressionUUID->"1983f635-b8a0-4e4a-8233-\
+2212cd2d8580"],
+
+Cell[TextData[{
+ "In programming, a function allows us to give a name to a block of code, \
+which we can call whenever we want to run the code. Here, we define the \
+function firstFunc from Pseudocode 1.14 in the text. This function requires \
+one parameter, ",
+ StyleBox["x", "Code"],
+ ". In the following code, the syntax ",
+ StyleBox[":=", "Code"],
+ " is Mathematica\[CloseCurlyQuote]s ",
+ StyleBox["delayed assignment",
+  FontSlant->"Italic"],
+ " operator, which means that computation does not happen immediately when we \
+define ",
+ StyleBox["firstFunc", "Code"],
+ ", but rather the computation happens each time ",
+ StyleBox["firstFunc", "Code"],
+ " is called. "
+}], "Text",
+ CellChangeTimes->{{3.839503777087242*^9, 3.8395038297131767`*^9}, 
+   3.839503916561598*^9, {3.839505100925572*^9, 3.8395051237326956`*^9}, {
+   3.846084991449078*^9, 3.846085006368198*^9}, 3.84608517634686*^9, {
+   3.9591769375135384`*^9, 3.9591770917400856`*^9}, {3.9591774393575306`*^9, 
+   3.959177473119604*^9}},ExpressionUUID->"23f3c983-3291-49b6-944d-\
+92e47cb7e8ea"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"firstFunc", "[", "x_", "]"}], ":=", 
+  RowBox[{
+   SuperscriptBox["x", "2"], "+", "1"}]}]], "Input",
+ CellChangeTimes->{{3.95917739534449*^9, 3.959177412445114*^9}},
+ CellLabel->
+  "In[159]:=",ExpressionUUID->"e819aca0-1991-d241-8272-96a9de35f06e"],
+
+Cell[TextData[{
+ "Now we can call our function with values of ",
+ StyleBox["x", "Code"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.9591774760023556`*^9, 
+  3.9591774890448227`*^9}},ExpressionUUID->"19198389-03f0-fe4f-8d4b-\
+5fff8be69f87"],
+
+Cell[BoxData[
+ RowBox[{"firstFunc", "[", "3", "]"}]], "Input",
+ CellChangeTimes->{{3.959177415224457*^9, 3.9591774173711586`*^9}},
+ CellLabel->
+  "In[160]:=",ExpressionUUID->"562dcf29-c9ce-0e42-9038-97b09c356e3c"],
+
+Cell[BoxData[
+ RowBox[{"firstFunc", "[", 
+  RowBox[{"-", "5"}], "]"}]], "Input",
+ CellChangeTimes->{{3.959177418799116*^9, 3.959177424314703*^9}},
+ CellLabel->
+  "In[161]:=",ExpressionUUID->"927f3259-7f85-4b4a-8570-c0fe90b91ce3"],
+
+Cell[BoxData[
+ RowBox[{"firstFunc", "[", "1.5", "]"}]], "Input",
+ CellChangeTimes->{{3.959177493514448*^9, 3.959177495915304*^9}},
+ CellLabel->
+  "In[162]:=",ExpressionUUID->"ccceb948-a6bb-2540-9e0f-8f4e9541c6ce"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Modules and Runtime", "Section",
+ CellChangeTimes->{{3.839673790347553*^9, 3.839673801474882*^9}, {
+   3.8396740559518003`*^9, 3.839674057841525*^9}, 
+   3.95917751798402*^9},ExpressionUUID->"6d968116-eebf-4ec7-aa01-\
+acf992765277"],
+
+Cell[TextData[{
+ "In Mathematica, a ",
+ StyleBox["Module", "Code"],
+ " allows us to define a block of code with its own variables. This code can \
+contain its own ",
+ StyleBox["local",
+  FontSlant->"Italic"],
+ " variables that won\[CloseCurlyQuote]t conflict with variables outside of \
+the ",
+ StyleBox["Module", "Code"],
+ ". The following ",
+ StyleBox["Module", "Code"],
+ " returns an approximation of \[Pi] computed with ",
+ StyleBox["nMax", "Code"],
+ " iterations, corresponding to Pseudocode 1.15 in the text."
+}], "Text",
+ CellChangeTimes->{{3.8396741790806627`*^9, 3.8396742113786173`*^9}, {
+   3.8408988789712753`*^9, 3.840898884588173*^9}, {3.8408990811428947`*^9, 
+   3.840899083054205*^9}, {3.8411468539873238`*^9, 3.84114688386322*^9}, {
+   3.846085181400532*^9, 3.846085188717189*^9}, 3.846087315745379*^9, 
+   3.8461610339840183`*^9, {3.9591775211593723`*^9, 
+   3.9591776481490917`*^9}},ExpressionUUID->"a568b8f8-3773-4ed0-8701-\
+6f1fbdd4e4a9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"approxPi", "[", "nMax_", "]"}], ":=", 
+  RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"specify", " ", "local", " ", "variables"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"sideLength", "=", 
+       RowBox[{"Sqrt", "[", "2", "]"}]}], ",", 
+      RowBox[{"piValues", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{"0", ",", "nMax"}], "]"}]}], ",", "a", ",", " ", "b"}], "}"}],
+     ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{"main", " ", "loop"}], " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Do", "[", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"Compute", " ", "a", " ", "and", " ", "b", " ", "values"}], 
+       " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"a", "=", 
+         RowBox[{"Sqrt", "[", 
+          RowBox[{"1", "-", 
+           SuperscriptBox[
+            RowBox[{"(", 
+             RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"b", "=", 
+         RowBox[{"1", "-", "a"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", " ", 
+         RowBox[{
+         "Compute", " ", "the", " ", "new", " ", "side", " ", "length", " ", 
+          "and", " ", "perimeter"}], " ", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"sideLength", "=", 
+         RowBox[{"Simplify", "[", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{
+            SuperscriptBox["b", "2"], "+", 
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{"sideLength", "/", "2"}], ")"}], "2"]}], "]"}], "]"}]}],
+         ";", "\[IndentingNewLine]", 
+        RowBox[{"perimeter", " ", "=", " ", 
+         RowBox[{
+          SuperscriptBox["2", "n"], "*", " ", "sideLength"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", " ", 
+         RowBox[{
+         "Compute", " ", "the", " ", "approximation", " ", "to", " ", "pi"}], 
+         " ", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+         "piValues", "\[LeftDoubleBracket]", "n", "\[RightDoubleBracket]"}], "=", 
+         RowBox[{"perimeter", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"n", ",", "3", ",", "nMax"}], "}"}]}], "\[IndentingNewLine]", 
+      "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+      "return", " ", "the", " ", "approximation", " ", "based", " ", "on", " ",
+        "the", " ", "side", " ", "length"}], " ", "*)"}], 
+     "\[IndentingNewLine]", "piValues"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.841146679597802*^9, 3.841146843759481*^9}, {
+  3.841146896329348*^9, 3.841146922573247*^9}, {3.8460849385269938`*^9, 
+  3.846084971914575*^9}, {3.846087324315477*^9, 3.846087380772869*^9}, {
+  3.959177693926428*^9, 3.959177802980812*^9}},
+ CellLabel->
+  "In[168]:=",ExpressionUUID->"87d902c8-85a7-460c-bd93-4241a5aa2314"],
+
+Cell["Now try out this Module:", "Text",
+ CellChangeTimes->{{3.841146932273538*^9, 3.841146933699703*^9}, {
+  3.9591777614504013`*^9, 
+  3.959177764125387*^9}},ExpressionUUID->"c1c23ba3-830f-49ed-b2d3-\
+6acac146cf58"],
+
+Cell[BoxData[
+ RowBox[{"approxPi", "[", "5", "]"}]], "Input",
+ CellChangeTimes->{{3.8396743796723223`*^9, 3.83967440575309*^9}, {
+   3.840898919354142*^9, 3.84089891974432*^9}, 3.9591777585310555`*^9},
+ CellLabel->
+  "In[169]:=",ExpressionUUID->"27e2dd54-02da-4724-a88d-58083264ea95"],
+
+Cell[TextData[{
+ "Next we will measure the runtime of our module. The following a simple \
+function will help measure runtime. Note that runtime measurements may be \
+inaccurate if we measure the runtime of the exact same calculation more than \
+once, since Mathematica remembers and recalls previously-computed values. To \
+get accurate runtime results, we should call ",
+ StyleBox["ClearSystemCache[]", "Code"],
+ " before measuring runtime so that we actually get the runtime of the \
+calculation, not the runtime of Mathematica recalling a previous calculation."
+}], "Text",
+ CellChangeTimes->{{3.8396742225140696`*^9, 3.839674229482288*^9}, {
+  3.9591778204504356`*^9, 3.959177834027561*^9}, {3.959177993507223*^9, 
+  3.9591780751152935`*^9}},ExpressionUUID->"0893666c-0cb8-4685-bb6c-\
+f8b70ffd90a9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"timeIt", "[", "nMax_", "]"}], ":=", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"ClearSystemCache", "[", "]"}], ";", 
+    RowBox[{
+     RowBox[{"Timing", "[", 
+      RowBox[{"approxPi", "[", "nMax", "]"}], "]"}], "\[LeftDoubleBracket]", 
+     "1", "\[RightDoubleBracket]"}]}], ")"}]}]], "Input",
+ CellChangeTimes->{{3.8396742307151012`*^9, 3.8396742510330715`*^9}, {
+  3.959177969572384*^9, 3.9591779759564*^9}},
+ CellLabel->
+  "In[183]:=",ExpressionUUID->"d4d0bed1-7707-4667-9928-63f7fbc7bf1d"],
+
+Cell[TextData[{
+ "Now we can call our ",
+ StyleBox["timeIt", "Code"],
+ " function. "
+}], "Text",
+ CellChangeTimes->{{3.9591779259129086`*^9, 3.959177958943796*^9}, 
+   3.959177992479141*^9},ExpressionUUID->"631b13ac-ded0-6b44-9080-\
+790e134fca7b"],
+
+Cell[BoxData[
+ RowBox[{"timeIt", "[", "3", "]"}]], "Input",
+ CellChangeTimes->{{3.9591778682261047`*^9, 3.959177870316244*^9}, {
+  3.9591779174665356`*^9, 3.9591779180802593`*^9}, {3.95917797947254*^9, 
+  3.9591779798676224`*^9}},
+ CellLabel->
+  "In[184]:=",ExpressionUUID->"1fed1ee5-8610-024b-aab8-059f64fbd49e"],
+
+Cell[BoxData[
+ RowBox[{"timeIt", "[", "10", "]"}]], "Input",
+ CellChangeTimes->{{3.959177891362871*^9, 3.95917792069154*^9}, {
+  3.9591779834841423`*^9, 3.959177983607704*^9}},
+ CellLabel->
+  "In[185]:=",ExpressionUUID->"528c5d63-4542-ee48-9c19-56ee73176ead"],
+
+Cell[BoxData[
+ RowBox[{"timeIt", "[", "15", "]"}]], "Input",
+ CellChangeTimes->{{3.9591778793971634`*^9, 3.9591779097081776`*^9}, {
+  3.9591779868452663`*^9, 3.9591779869973354`*^9}},
+ CellLabel->
+  "In[186]:=",ExpressionUUID->"fe20de96-3d5f-7f49-9dab-bebd7bc26cde"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1061.3999999999999`, 1122.6},
+WindowMargins->{{Automatic, -180}, {816, Automatic}},
+FrontEndVersion->"14.2 for Microsoft Windows (64-bit) (December 26, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"31a1d6cf-8a22-4b2c-a2c3-56a3c1273f9f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 276, 3, 96, "Title",ExpressionUUID->"f0e26973-e2f6-4675-aa52-95c6c69584bd"],
+Cell[859, 27, 541, 11, 44, "Subtitle",ExpressionUUID->"a5c2892e-c9b5-43aa-b61c-b52f9108e4fd"],
+Cell[CellGroupData[{
+Cell[1425, 42, 522, 13, 66, "Section",ExpressionUUID->"debe1426-9c98-4a58-b928-3f4d5fb495c4"],
+Cell[1950, 57, 303, 4, 33, "Text",ExpressionUUID->"37b9b8c5-7da1-4815-8675-dcb73dfa99e9"],
+Cell[2256, 63, 276, 4, 33, "Text",ExpressionUUID->"fed78f02-4795-4612-bf58-46bfd7d5536d"],
+Cell[2535, 69, 301, 5, 28, "Input",ExpressionUUID->"df8be85d-221c-41d4-a038-19cdcf456997"],
+Cell[2839, 76, 198, 3, 33, "Text",ExpressionUUID->"08e52c58-a6c9-e641-aa0a-30928f4af5df"],
+Cell[3040, 81, 233, 4, 28, "Input",ExpressionUUID->"c55bb16d-f45e-534b-8231-69e50229ff4a"],
+Cell[3276, 87, 604, 13, 33, "Text",ExpressionUUID->"eb88433d-bd2e-4ac4-ac21-0b07c891ce40"],
+Cell[3883, 102, 330, 7, 28, "Input",ExpressionUUID->"85299dd2-f913-4513-b215-7d1c0bd95463"],
+Cell[4216, 111, 485, 12, 33, "Text",ExpressionUUID->"d1cdb1e1-f3d3-4fef-9de1-99faec6206fc"],
+Cell[4704, 125, 429, 9, 28, "Input",ExpressionUUID->"637cccc8-2549-4db4-bd6e-50c9714635f1"],
+Cell[5136, 136, 1132, 26, 77, "Text",ExpressionUUID->"7314518d-05a9-483f-9f56-3224132238a6"],
+Cell[6271, 164, 2059, 50, 209, "Input",ExpressionUUID->"2b96a197-3175-4b98-b4f2-7834af23d515"],
+Cell[8333, 216, 842, 18, 55, "Text",ExpressionUUID->"0dc8cacd-3370-4838-a91a-8167f0af712c"],
+Cell[9178, 236, 311, 5, 28, "Input",ExpressionUUID->"69111684-abeb-4b03-9dd5-e042b096e894"],
+Cell[9492, 243, 501, 11, 55, "Text",ExpressionUUID->"722abd48-5e12-493b-b453-e176e992a8e7"],
+Cell[9996, 256, 2139, 52, 247, "Input",ExpressionUUID->"e8bcb078-74c4-4988-8d9d-eed89c00a3ad"],
+Cell[12138, 310, 307, 8, 33, "Text",ExpressionUUID->"bcbe722a-1c90-8f44-9844-d11227302d49"],
+Cell[12448, 320, 330, 6, 28, "Input",ExpressionUUID->"6bae32d7-5ed1-4696-9581-27075cb05190"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12815, 331, 157, 3, 66, "Section",ExpressionUUID->"b74a5dfa-7d39-4e76-a5c4-d90454f4fb5a"],
+Cell[12975, 336, 531, 11, 55, "Text",ExpressionUUID->"e7a659d3-a6e7-473d-a8e6-f90846f8ef4d"],
+Cell[13509, 349, 283, 5, 28, "Input",ExpressionUUID->"b5288b72-2929-486c-9c3a-711bf15f1b95"],
+Cell[13795, 356, 369, 8, 55, "Text",ExpressionUUID->"199a206e-7794-44f2-9ee5-b05bc2131408"],
+Cell[14167, 366, 547, 11, 28, "Input",ExpressionUUID->"d6bd7c16-36d9-4b60-abb9-3eff92de0e47"],
+Cell[14717, 379, 368, 10, 33, "Text",ExpressionUUID->"7c2e4f9a-b4b3-4f89-b14c-e7412dd62ed2"],
+Cell[15088, 391, 775, 17, 28, "Input",ExpressionUUID->"4a65f344-7de1-49c5-8b9c-fa320def5c73"],
+Cell[15866, 410, 328, 9, 33, "Text",ExpressionUUID->"615a61ac-d2d5-4e5c-9f64-41a53b7aa5ca"],
+Cell[16197, 421, 646, 15, 28, "Input",ExpressionUUID->"f1ccac33-e63a-4df1-84b2-d10ede94d185"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16880, 441, 157, 3, 66, "Section",ExpressionUUID->"6f86353f-f7ad-4e59-aa42-3a9935745753"],
+Cell[17040, 446, 733, 17, 33, "Text",ExpressionUUID->"488d9fc7-7b84-4da7-b2c3-f74cd8b71dee"],
+Cell[17776, 465, 1198, 28, 80, "Text",ExpressionUUID->"ae9d918c-0ef5-fd43-89df-c6af133a36ba"],
+Cell[18977, 495, 561, 14, 64, "Input",ExpressionUUID->"1136c971-c993-4ded-b275-fedf248a7cb7"],
+Cell[19541, 511, 424, 9, 55, "Text",ExpressionUUID->"bf037cee-8f10-4943-b4f1-12e2114ac7ff"],
+Cell[19968, 522, 636, 17, 64, "Input",ExpressionUUID->"e2aba1bf-6f4d-412d-9190-e7b18ad0966b"],
+Cell[20607, 541, 393, 9, 33, "Text",ExpressionUUID->"3f4db183-23cd-4404-af5e-a1afbf47837f"],
+Cell[21003, 552, 4364, 95, 405, "Input",ExpressionUUID->"c7109900-cb40-4f0a-a599-f1006591312c"],
+Cell[25370, 649, 528, 14, 33, "Text",ExpressionUUID->"789c4d75-1b4a-470c-8b98-4c0872ac00d6"],
+Cell[25901, 665, 946, 13, 47, "Input",ExpressionUUID->"481a1ff1-910a-4450-b484-0e8708b1c517"],
+Cell[26850, 680, 471, 11, 55, "Text",ExpressionUUID->"e0030768-8c17-435b-9601-b21a93a79f95"],
+Cell[27324, 693, 421, 10, 55, "Text",ExpressionUUID->"e803e384-ca49-423b-a545-4fa1140eb517"],
+Cell[27748, 705, 321, 6, 28, "Input",ExpressionUUID->"307e6422-4c43-41b0-a250-cf6307496e09"],
+Cell[28072, 713, 562, 11, 55, "Text",ExpressionUUID->"7551ef9d-597d-4adb-b9c8-91efd922fe52"],
+Cell[28637, 726, 5073, 111, 481, "Input",ExpressionUUID->"7853f27e-cf5a-47b4-932d-8a3826a8aaf5"],
+Cell[33713, 839, 480, 10, 33, "Text",ExpressionUUID->"961c8a70-8845-4d06-be12-6c8447f9ea96"],
+Cell[34196, 851, 625, 12, 77, "Text",ExpressionUUID->"b44c8a91-230d-43ab-87da-d68a9158cda1"],
+Cell[34824, 865, 3962, 95, 500, "Input",ExpressionUUID->"938c9607-7f4d-7941-8fb1-649da8873ff3"],
+Cell[38789, 962, 726, 13, 99, "Text",ExpressionUUID->"8079c526-f3f5-454a-9fdf-b75030e5c5fd"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[39552, 980, 168, 3, 66, "Section",ExpressionUUID->"1983f635-b8a0-4e4a-8233-2212cd2d8580"],
+Cell[39723, 985, 1057, 23, 99, "Text",ExpressionUUID->"23f3c983-3291-49b6-944d-92e47cb7e8ea"],
+Cell[40783, 1010, 283, 7, 28, "Input",ExpressionUUID->"e819aca0-1991-d241-8272-96a9de35f06e"],
+Cell[41069, 1019, 235, 7, 33, "Text",ExpressionUUID->"19198389-03f0-fe4f-8d4b-5fff8be69f87"],
+Cell[41307, 1028, 213, 4, 28, "Input",ExpressionUUID->"562dcf29-c9ce-0e42-9038-97b09c356e3c"],
+Cell[41523, 1034, 229, 5, 28, "Input",ExpressionUUID->"927f3259-7f85-4b4a-8570-c0fe90b91ce3"],
+Cell[41755, 1041, 213, 4, 28, "Input",ExpressionUUID->"ccceb948-a6bb-2540-9e0f-8f4e9541c6ce"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[42005, 1050, 238, 4, 66, "Section",ExpressionUUID->"6d968116-eebf-4ec7-aa01-acf992765277"],
+Cell[42246, 1056, 959, 22, 77, "Text",ExpressionUUID->"a568b8f8-3773-4ed0-8701-6f1fbdd4e4a9"],
+Cell[43208, 1080, 3064, 73, 386, "Input",ExpressionUUID->"87d902c8-85a7-460c-bd93-4241a5aa2314"],
+Cell[46275, 1155, 217, 4, 33, "Text",ExpressionUUID->"c1c23ba3-830f-49ed-b2d3-6acac146cf58"],
+Cell[46495, 1161, 284, 5, 28, "Input",ExpressionUUID->"27e2dd54-02da-4724-a88d-58083264ea95"],
+Cell[46782, 1168, 804, 13, 99, "Text",ExpressionUUID->"0893666c-0cb8-4685-bb6c-f8b70ffd90a9"],
+Cell[47589, 1183, 527, 13, 28, "Input",ExpressionUUID->"d4d0bed1-7707-4667-9928-63f7fbc7bf1d"],
+Cell[48119, 1198, 247, 7, 33, "Text",ExpressionUUID->"631b13ac-ded0-6b44-9080-790e134fca7b"],
+Cell[48369, 1207, 313, 6, 28, "Input",ExpressionUUID->"1fed1ee5-8610-024b-aab8-059f64fbd49e"],
+Cell[48685, 1215, 259, 5, 28, "Input",ExpressionUUID->"528c5d63-4542-ee48-9c19-56ee73176ead"],
+Cell[48947, 1222, 266, 5, 28, "Input",ExpressionUUID->"fe20de96-3d5f-7f49-9dab-bebd7bc26cde"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
